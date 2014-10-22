@@ -172,6 +172,55 @@ var moves = {
     }
   },
 
+  graveRobber :function(gameData, helpers) {
+  	var myHero = gameData.activeHero;
+
+	var graveStats = helpers.findNearestObjectDirectionAndDistance(gameData.board, myHero, function(boardTile) {
+   	if (boardTile.subType == 'Bones') {
+	   	return true;	
+		}	
+	});
+
+	var distanceToGrave = graveStats.distance;
+	var directionToGrave = graveStats.direction;
+	
+	var enemyStats = helpers.findNearestObjectDirectionAndDistance(gameData.board, myHero, function(enemyTile) {
+		return enemyTile.type == 'Hero' && enemyTile.team != hero.team;	
+	});
+
+	var distanceToEnemy = enemyStats.distance;
+	var distanceToEnemy = enemyStats.direction;
+
+   var healthWellStats = helpers.findNearestObjectDirectionAndDistance(gameData.board, myHero, function(boardTile) {
+   	if (boardTile.type === 'HealthWell') {
+        return true;
+   	}
+   });
+
+   var distanceToHealthWell = healthWellStats.distance;
+   var directionToHealthWell = healthWellStats.direction;
+
+	var diamondMineStats = helpers.findNearestObjectDirectionAndDistance(gameData.board, myHero, function(boardTile) {
+   	if (boardTile.type == 'DiamondMine') {
+	   	return true;	
+		}	
+	});
+
+	var distanceToMine = diamondMineStats.distance;
+	var directionToMine = diamondMineStats.direction;
+ 
+	if (directionToGrave) {
+   	return directionToGrave;	
+	} else if (myHero.health < 40 || (distanceToHealthWell == 1 && myHero.health < 100))  {
+		return directionToHealthWell;
+	} else if (myHero.health >= 70 && distanceToHealthWell <= 2 && distanceToMine == 1) {
+		return directionToMine;
+	} else {
+   	return helpers.findNearestWeakerEnemy(gameData);	
+	}
+
+  },
+
   // The "Coward"
   // This hero will try really hard not to die.
   coward : function(gameData, helpers) {
@@ -180,7 +229,7 @@ var moves = {
  };
 
 //  Set our heros strategy
-var  move =  moves.aggressor;
+var  move =  moves.graveRobber;
 
 // Export the move function here
 module.exports = move;

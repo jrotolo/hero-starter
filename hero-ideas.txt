@@ -1,0 +1,10 @@
+Graverobber
+	1. Focuses on moving towards others graves
+	2. Attempts to rob grave and kill any player near.
+	3. Hero will never initiate a fight unless near grave
+	4. Hero will always look for health or open grave if below 40hp
+
+Calculated
+	1. Hero will only farm diamonds that are near healthwells
+	2. Hero will always attempt to heal after mining.
+	3. If hero encounters an enemy with 10 or less health then attack
