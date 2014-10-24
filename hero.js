@@ -210,13 +210,15 @@ var moves = {
 	var directionToMine = diamondMineStats.direction;
  
 	if (directionToGrave) {
-   	return directionToGrave;	
+   		return directionToGrave;	
 	} else if (myHero.health < 40 || (distanceToHealthWell == 1 && myHero.health < 100))  {
 		return directionToHealthWell;
 	} else if (myHero.health >= 70 && distanceToHealthWell <= 2 && distanceToMine == 1) {
 		return directionToMine;
+	} else if (myHero.health >= 70 && distanceToHealthWell <= 2) {
+   		return helpers.findNearestWeakerEnemy(gameData);	
 	} else {
-   	return helpers.findNearestWeakerEnemy(gameData);	
+		return directionToHealthWell;
 	}
 
   },
